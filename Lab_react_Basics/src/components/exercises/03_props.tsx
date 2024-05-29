@@ -1,3 +1,4 @@
+// src/components/exercises/03_props.tsx
 import React from 'react';
 import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 
