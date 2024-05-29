@@ -1,11 +1,37 @@
-import React from "react";
-import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+import React from 'react';
 
-
-const Demo: React.FC = () => {
-  return (
-      <h1>TODO</h1>
-  );
+type Module = {
+  name: string;
+  noLectures: number;
 };
 
-export default Demo;
+type Props = {
+  title: string;
+  modules: Module[];
+};
+
+const CourseModulesCollection = ({ title, modules }: Props) => {
+  return (
+    <div>
+      <h1>{title}</h1>
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>No of Lectures</th>
+          </tr>
+        </thead>
+        <tbody>
+          {modules.map((module, index) => (
+            <tr key={index}>
+              <td>{module.name}</td>
+              <td>{module.noLectures}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default CourseModulesCollection;

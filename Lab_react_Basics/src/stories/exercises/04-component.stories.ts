@@ -11,11 +11,11 @@ const meta: Meta<typeof CourseModulesCollections> = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-const title = "HDip Computer Science";
+const title = "MSc Enterprise Software Systems - Module Table";
 const modules = [
   {
-    name: "DevOps",
-    noLectures: 1,
+    name: "Cloud Architecture",
+    noLectures: 2,
     noPracticals: 2,
   },
   {
@@ -24,17 +24,16 @@ const modules = [
     noPracticals: 3,
   },
   {
-    name: "Programming",
+    name: "Mobile App Development",
     noLectures: 2,
     noPracticals: 2,
   },
   {
-    name: "Computer Systems",
+    name: "Agile Software Development",
     noLectures: 2,
     noPracticals: 3,
   },
 ];
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Basic: Story = {
   args:{
     modules:modules,
