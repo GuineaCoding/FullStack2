@@ -17,3 +17,10 @@ export interface BaseMovieProps {
     favourite?: boolean;
     movies: BaseMovie[];
   }
+
+  export interface MovieDetailsProps extends BaseMovieProps {
+    genres: {
+      id: number;
+      name: string;
+    }[];
+  }
