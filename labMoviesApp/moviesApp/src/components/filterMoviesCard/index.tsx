@@ -24,11 +24,12 @@ const styles = {
 };
 
 interface FilterMoviesCardProps {
-  titleFilter: string; 
-  genreFilter: string; 
+  onUserInput: (f: FilterOption, s: string) => void; 
+  titleFilter: string;  
+  genreFilter: string;  
 }
 
-const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreFilter }) => {
+const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreFilter, onUserInput }) => {
   const [genres, setGenres] = useState([{ id: '0', name: "All" }]);
   const [title, setTitle] = useState(titleFilter);
   const [genre, setGenre] = useState(genreFilter);
@@ -39,20 +40,19 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
     )
       .then(res => res.json())
       .then(json => {
-        return json.genres;
-      })
-      .then(apiGenres => {
-        setGenres([{ id: '0', name: "All" }, ...apiGenres]);
+        setGenres([{ id: '0', name: "All" }, ...json.genres]);
       })
       .catch(error => console.error('Failed to fetch genres:', error));
   }, []);
 
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value); 
+    onUserInput('title', e.target.value); 
   }
 
   const handleGenreChange = (e: SelectChangeEvent<string>) => {
     setGenre(e.target.value); 
+    onUserInput('genre', e.target.value); 
   };
 
   return (
@@ -64,14 +64,14 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
             Filter the movies.
           </Typography>
           <TextField
-      sx={styles.formControl}
-      id="filled-search"
-      label="Search field"
-      type="search"
-      value={titleFilter}
-      variant="filled"
-      onChange={handleTextChange}
-    />
+            sx={styles.formControl}
+            id="filled-search"
+            label="Search field"
+            type="search"
+            value={title}
+            variant="filled"
+            onChange={handleTextChange}
+          />
           <FormControl sx={styles.formControl}>
             <InputLabel id="genre-label">Genre</InputLabel>
             <Select
@@ -95,6 +95,7 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
             <SortIcon fontSize="large" />
             Sort the movies.
           </Typography>
+          {/* Sorting functionality can be added here */}
         </CardContent>
       </Card>
     </>
