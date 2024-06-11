@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react"; // Replacing existing react import
+import { useParams } from "react-router-dom";
 import MovieHeader from "../components/headerMovie/";
 import MovieDetails from "../components/movieDetails";
 import Grid from "@mui/material/Grid";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import { MoviePageProps} from "../types/interfaces";
+import { MovieDetailsProps, MovieImage } from "../types/interfaces"; // Replacing existing MoviePageProps import
 
 const styles = {
   imageListRoot: {
@@ -16,10 +17,41 @@ const styles = {
     width: "100%",
     height: "auto",
   },
-
 };
 
-const MoviePage: React.FC<MoviePageProps> = ({movie, images}) => {
+const MoviePage: React.FC = () => {
+  const { id } = useParams();
+  const [movie, setMovie] = useState<MovieDetailsProps>();
+  const [images, setImages] = useState<MovieImage[]>([]);
+
+  useEffect(() => {
+    fetch(
+      `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    )
+      .then((res) => res.json())
+      .then((movie) => {
+        setMovie(movie);
+      })
+      .catch((error) => {
+        console.error('Error fetching movie:', error);
+        setMovie(undefined); 
+      });
+  }, [id]);
+
+  useEffect(() => {
+    fetch(
+      `https://api.themoviedb.org/3/movie/${id}/images?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    )
+      .then((res) => res.json())
+      .then((json) => json.posters)
+      .then((images) => {
+        setImages(images);
+      })
+      .catch((error) => {
+        console.error('Error fetching images:', error);
+        setImages([]); 
+      });
+  }, [id]);
 
   return (
     <>
@@ -28,7 +60,7 @@ const MoviePage: React.FC<MoviePageProps> = ({movie, images}) => {
           <MovieHeader {...movie} />
           <Grid container spacing={5} style={{ padding: "15px" }}>
             <Grid item xs={3}>
-              <div >
+              <div>
                 <ImageList sx={styles.imageListRoot} cols={1}>
                   {images.map((image) => (
                     <ImageListItem
@@ -36,7 +68,7 @@ const MoviePage: React.FC<MoviePageProps> = ({movie, images}) => {
                       sx={styles.gridListTile}
                       cols={1}
                     >
-                     <img
+                      <img
                         src={`https://image.tmdb.org/t/p/w500/${image.file_path}`}
                         alt={'Image alternative'}
                       />                    
