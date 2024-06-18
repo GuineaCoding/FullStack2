@@ -6,6 +6,7 @@ import MovieFilterUI from "../components/movieFilterUI";
 import { DiscoverMovies } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
+import AddToFavouritesIcon from '../components/cardIcons/addToFavourites'
 
 // Define filtering functions
 const titleFilter = (movie, filterValue) => {
@@ -25,8 +26,8 @@ const HomePage = () => {
 
     useEffect(() => {
         if (data) {
-            // Update the initial filter values when data loads or changes
             setFilterValues(prevFilters => prevFilters.map(filter => {
+               
                 const matchingData = data.results.find(item => filter.name === item.name);
                 return { ...filter, value: matchingData ? matchingData.value : filter.value };
             }));
@@ -53,7 +54,7 @@ const HomePage = () => {
             <PageTemplate
                 title="Discover Movies"
                 movies={displayedMovies}
-                selectFavourite={(movieId) => true}
+                action={(movie) => <AddToFavouritesIcon {...movie} />}
             />
             <MovieFilterUI
                 onFilterValuesChange={changeFilterValues}
