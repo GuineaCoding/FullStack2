@@ -1,27 +1,38 @@
-import React from "react";
+import React, { useContext } from 'react';
 import PageTemplate from '../components/templateMovieListPage';
-import { BaseMovieProps } from "../types/interfaces";
+import { useQuery } from 'react-query';
 import { getUpcomingMovies } from "../api/tmdb-api";
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-import { useQuery } from 'react-query';
-import Spinner from '../components/spinner'; 
+import { MoviesContext } from '../contexts/moviesContext';
+import { red, blue } from '@mui/material/colors'; 
 
 const UpcomingMoviesPage = () => {
-  const { data, error, isLoading, isError } = useQuery<BaseMovieProps[], Error>('upcomingMovies', getUpcomingMovies);
+  const { data, isLoading, isError, error } = useQuery('upcomingMovies', getUpcomingMovies);
+  const { addToMustWatch, mustWatch } = useContext(MoviesContext);  
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  const handleAddToMustWatch = (movieId) => {
+    addToMustWatch(movieId);  
+  };
 
-  if (isError) {
-    return <div>Error: {error?.message}</div>;
-  }
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error: {error.message}</p>;
 
   return (
     <PageTemplate
       title="Upcoming Movies"
-      movies={data || []}  
-      action={(movie) => <PlaylistAddIcon style={{ color: '#1976d2' }} />}
+      movies={data || []}
+      action={movie => (
+        <PlaylistAddIcon
+          style={{ 
+            cursor: 'pointer', 
+            color: mustWatch.includes(movie.id) ? red[500] : blue[500], // Icon changes to red if in Must Watch list
+            transition: 'color 0.3s', 
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.color = mustWatch.includes(movie.id) ? red[700] : blue[700]}
+          onMouseLeave={(e) => e.currentTarget.style.color = mustWatch.includes(movie.id) ? red[500] : blue[500]} 
+          onClick={() => handleAddToMustWatch(movie.id)}
+        />
+      )}
     />
   );
 };
