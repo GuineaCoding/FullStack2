@@ -28,7 +28,7 @@ const styles = {
 interface MovieCardProps {
   movie: BaseMovieProps;
   action?: (m: BaseMovieProps) => React.ReactNode;
-  onUpcomingPage?: boolean; 
+  onUpcomingPage?: boolean;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie, action, onUpcomingPage }) => {
