@@ -28,7 +28,7 @@ const styles = {
 interface MovieCardProps {
   movie: BaseMovieProps;
   action?: (m: BaseMovieProps) => React.ReactNode;
-  onUpcomingPage?: boolean; // New prop to determine if it's on the upcoming page
+  onUpcomingPage?: boolean; 
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie, action, onUpcomingPage }) => {
@@ -36,7 +36,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action, onUpcomingPage }) 
   const isFavourite = favourites.includes(movie.id);
   const isInMustWatch = mustWatch.includes(movie.id);
 
-  // Decide color based on if it's on the upcoming page and in must watch
   const iconColor = onUpcomingPage && isInMustWatch ? red[500] : blue[500];
 
   return (
@@ -47,7 +46,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action, onUpcomingPage }) 
             <Avatar sx={{ backgroundColor: isFavourite ? "rgb(255, 0, 0)" : "inherit" }}>
               {action && action({
                 ...movie,
-                iconColor: iconColor  // Pass color to action
+                iconColor: iconColor  
               })}
             </Avatar>
           ) : null
@@ -78,7 +77,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action, onUpcomingPage }) 
       <CardActions disableSpacing>
         {action && action({
           ...movie,
-          iconColor: iconColor  // Pass color to action
+          iconColor: iconColor  
         })}
         <Link to={`/movies/${movie.id}`}>
           <Button variant="outlined" size="medium" color="primary">

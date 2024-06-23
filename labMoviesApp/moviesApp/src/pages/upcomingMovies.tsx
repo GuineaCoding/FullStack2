@@ -25,7 +25,7 @@ const UpcomingMoviesPage = () => {
         <PlaylistAddIcon
           style={{ 
             cursor: 'pointer', 
-            color: mustWatch.includes(movie.id) ? red[500] : blue[500], // Icon changes to red if in Must Watch list
+            color: mustWatch.includes(movie.id) ? red[500] : blue[500], 
             transition: 'color 0.3s', 
           }}
           onMouseEnter={(e) => e.currentTarget.style.color = mustWatch.includes(movie.id) ? red[700] : blue[700]}
