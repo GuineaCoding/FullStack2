@@ -1,24 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PageTemplate from '../components/templateMovieListPage';
 import { BaseMovieProps } from "../types/interfaces";
 import { getUpcomingMovies } from "../api/tmdb-api";
-import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd'; 
-import { blue } from '@mui/material/colors';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import { useQuery } from 'react-query';
+import Spinner from '../components/spinner'; 
 
 const UpcomingMoviesPage = () => {
-  const [movies, setMovies] = useState<BaseMovieProps[]>([]);
+  const { data, error, isLoading, isError } = useQuery<BaseMovieProps[], Error>('upcomingMovies', getUpcomingMovies);
 
-  useEffect(() => {
-    getUpcomingMovies().then(movies => {
-      setMovies(movies);
-    });
-  }, []);
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <div>Error: {error?.message}</div>;
+  }
 
   return (
     <PageTemplate
       title="Upcoming Movies"
-      movies={movies}
-      action={(movie) => <PlaylistAddIcon style={{ color: blue[500] }} />}
+      movies={data || []}  
+      action={(movie) => <PlaylistAddIcon style={{ color: '#1976d2' }} />}
     />
   );
 };
